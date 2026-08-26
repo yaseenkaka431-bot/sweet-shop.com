@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AL Fajar Sweet Shop</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #fff8ef;
+            color: #3b2118;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            height: 75px;
+            background: #5a2115;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            color: #ffd166;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: white;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #ffd166;
+        }
+
+        /* ================= HERO SLIDER ================= */
+
+        .slider {
+            height: 100vh;
+            margin-top: 75px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: 1s ease;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+        }
+
+        .slide-content {
+            position: absolute;
+            top: 50%;
+            left: 8%;
+            transform: translateY(-50%);
+            color: white;
+            max-width: 650px;
+            z-index: 2;
+        }
+
+        .slide-content h1 {
+            color: #ffd166;
+            font-size: 65px;
+            margin-bottom: 10px;
+        }
+
+        .slide-content h2 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .slide-content p {
+            font-size: 19px;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 30px;
+            background: #ffd166;
+            color: #5a2115;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: white;
+            transform: scale(1.05);
+        }
+
+        /* ================= ARROWS ================= */
+
+        .prev,
+        .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.85);
+            color: #5a2115;
+            font-size: 25px;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        .prev {
+            left: 25px;
+        }
+
+        .next {
+            right: 25px;
+        }
+
+        .prev:hover,
+        .next:hover {
+            background: #ffd166;
+        }
+
+        /* ================= DOTS ================= */
+
+        .dots {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+            text-align: center;
+            z-index: 5;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            background: white;
+            border-radius: 50%;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: #ffd166;
+            transform: scale(1.3);
+        }
+
+        /* ================= GENERAL ================= */
+
+        section {
+            padding: 80px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #5a2115;
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .section-text {
+            max-width: 800px;
+            text-align: center;
+            margin: auto;
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+        /* ================= ABOUT ================= */
+
+        .about {
+            background: white;
+        }
+
+        /* ================= PRODUCTS ================= */
+
+        .products {
+            background: #fff0dc;
+        }
+
+        .product-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .card {
+            width: 220px;
+            background: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+        }
+
+        .icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            color: #5a2115;
+            margin-bottom: 10px;
+            font-size: 21px;
+        }
+
+        .card p {
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* ================= FEATURES ================= */
+
+        .features {
+            background: #5a2115;
+            color: white;
+        }
+
+        .features .section-title {
+            color: #ffd166;
+        }
+
+        .feature-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .feature {
+            width: 250px;
+            text-align: center;
+            padding: 25px;
+        }
+
+        .feature h3 {
+            color: #ffd166;
+            margin: 15px 0;
+        }
+
+        .feature p {
+            line-height: 1.6;
+        }
+
+        /* ================= OFFERS ================= */
+
+        .offers {
+            text-align: center;
+            background: #fff8ef;
+        }
+
+        .offer-box {
+            max-width: 850px;
+            margin: 35px auto;
+            padding: 35px;
+            background: #ffd166;
+            border-radius: 20px;
+        }
+
+        .offer-box h2 {
+            color: #5a2115;
+            margin-bottom: 15px;
+            font-size: 32px;
+        }
+
+        .offer-box p {
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        /* ================= CONTACT ================= */
+
+        .contact {
+            background: #fff0dc;
+            text-align: center;
+        }
+
+        .contact-box {
+            max-width: 700px;
+            margin: 35px auto 0;
+            background: #5a2115;
+            color: white;
+            padding: 35px;
+            border-radius: 20px;
+        }
+
+        .contact-box p {
+            margin: 15px 0;
+            font-size: 18px;
+        }
+
+        .call-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 13px 28px;
+            background: #ffd166;
+            color: #5a2115;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #32120c;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        footer span {
+            color: #ffd166;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media(max-width: 700px) {
+
+            nav {
+                padding: 0 20px;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .slide-content {
+                left: 8%;
+                right: 8%;
+            }
+
+            .slide-content h1 {
+                font-size: 42px;
+            }
+
+            .slide-content h2 {
+                font-size: 28px;
+            }
+
+            .slide-content p {
+                font-size: 16px;
+            }
+
+            .prev,
+            .next {
+                width: 40px;
+                height: 40px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav>
+
+    <div class="logo">
+        AL <span>Fajar</span>
+    </div>
+
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#offers">Offers</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+
+</nav>
+
+
+<!-- ================= SLIDER ================= -->
+
+<section class="slider" id="home">
+
+    <!-- Slide 1 -->
+
+    <div class="slide active"
+         style="background-image:url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1600&q=80');">
+
+        <div class="slide-content">
+
+            <h1>AL Fajar</h1>
+
+            <h2>Sweetness For Every Occasion</h2>
+
+            <p>
+                Welcome to AL Fajar Sweet Shop.
+                We bring you fresh sweets, delicious cakes,
+                chocolates, gifts and decoration items
+                for every special moment.
+            </p>
+
+            <a href="#products" class="btn">
+                Explore Our Products
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Slide 2 -->
+
+    <div class="slide"
+         style="background-image:url('https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=1600&q=80');">
+
+        <div class="slide-content">
+
+            <h2>Delicious Sweet Cakes</h2>
+
+            <p>
+                Celebrate birthdays, weddings and special
+                occasions with our delicious and beautifully
+                prepared cakes.
+            </p>
+
+            <a href="#contact" class="btn">
+                Order Your Cake
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Slide 3 -->
+
+    <div class="slide"
+         style="background-image:url('https://images.unsplash.com/photo-1548907040-4d42fcaa6f9f?auto=format&fit=crop&w=1600&q=80');">
+
+        <div class="slide-content">
+
+            <h2>Chocolate Varieties</h2>
+
+            <p>
+                Discover different varieties of chocolates,
+                perfect for birthdays, celebrations,
+                gifts and special moments.
+            </p>
+
+            <a href="#products" class="btn">
+                View Chocolates
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Slide 4 -->
+
+    <div class="slide"
+         style="background-image:url('https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=1600&q=80');">
+
+        <div class="slide-content">
+
+            <h2>Beautiful Gift Presents</h2>
+
+            <p>
+                Make someone feel special with our beautiful
+                present gifts and specially prepared sweet
+                gift boxes.
+            </p>
+
+            <a href="#contact" class="btn">
+                Explore Gifts
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Slide 5 -->
+
+    <div class="slide"
+         style="background-image:url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1600&q=80');">
+
+        <div class="slide-content">
+
+            <h2>Decoration For Celebrations</h2>
+
+            <p>
+                We also provide beautiful decoration items
+                for birthdays, parties and other memorable
+                celebrations.
+            </p>
+
+            <a href="#contact" class="btn">
+                Contact Us
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Slider Buttons -->
+
+    <button class="prev" onclick="changeSlide(-1)">
+        ❮
+    </button>
+
+    <button class="next" onclick="changeSlide(1)">
+        ❯
+    </button>
+
+
+    <!-- Slider Dots -->
+
+    <div class="dots">
+
+        <span class="dot active" onclick="goToSlide(0)"></span>
+
+        <span class="dot" onclick="goToSlide(1)"></span>
+
+        <span class="dot" onclick="goToSlide(2)"></span>
+
+        <span class="dot" onclick="goToSlide(3)"></span>
+
+        <span class="dot" onclick="goToSlide(4)"></span>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ABOUT ================= -->
+
+<section class="about" id="about">
+
+    <h2 class="section-title">
+        About AL Fajar
+    </h2>
+
+    <p class="section-text">
+
+        AL Fajar is your one-stop destination for delicious
+        sweets, cakes, chocolates, gifts and celebration
+        decorations. Our goal is to make every celebration
+        more beautiful and every moment more memorable.
+
+        <br><br>
+
+        We offer fresh and tasty products with great care.
+        Whether you are celebrating a birthday, wedding,
+        anniversary, festival or simply want to surprise
+        someone, AL Fajar is here to make your day sweeter.
+
+    </p>
+
+</section>
+
+
+<!-- ================= PRODUCTS ================= -->
+
+<section class="products" id="products">
+
+    <h2 class="section-title">
+        What We Offer
+    </h2>
+
+    <p class="section-text">
+        Explore our delicious sweets and celebration products.
+    </p>
+
+
+    <div class="product-container">
+
+
+        <div class="card">
+
+            <div class="icon">🍰</div>
+
+            <h3>Sweet Cakes</h3>
+
+            <p>
+                Fresh and delicious cakes for birthdays,
+                weddings and special occasions.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">🍫</div>
+
+            <h3>Chocolates</h3>
+
+            <p>
+                Different varieties of chocolates
+                for every taste and occasion.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">🍬</div>
+
+            <h3>Traditional Sweets</h3>
+
+            <p>
+                Gulab Jamun, Barfi, Rasmalai, Jalebi
+                and many more delicious sweets.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">🎁</div>
+
+            <h3>Present Gifts</h3>
+
+            <p>
+                Beautiful gift packs and sweet boxes
+                for your loved ones.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">🎈</div>
+
+            <h3>Decoration</h3>
+
+            <p>
+                Decoration items for birthdays,
+                parties and celebrations.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">🥮</div>
+
+            <h3>Bakery Items</h3>
+
+            <p>
+                Fresh bakery snacks and tasty treats
+                prepared for our customers.
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- ================= FEATURES ================= -->
+
+<section class="features">
+
+    <h2 class="section-title">
+        Why Choose AL Fajar?
+    </h2>
+
+
+    <div class="feature-container">
+
+
+        <div class="feature">
+
+            <div class="icon">
+                ⭐
+            </div>
+
+            <h3>Quality Products</h3>
+
+            <p>
+                We focus on providing delicious,
+                fresh and quality products.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="icon">
+                ❤️
+            </div>
+
+            <h3>Made With Care</h3>
+
+            <p>
+                Every product is prepared with
+                care and attention to quality.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="icon">
+                😊
+            </div>
+
+            <h3>Customer Satisfaction</h3>
+
+            <p>
+                Our customers and their happiness
+                are always important to us.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="icon">
+                🎉
+            </div>
+
+            <h3>For Every Occasion</h3>
+
+            <p>
+                Birthdays, weddings, festivals,
+                parties and many more occasions.
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- ================= OFFERS ================= -->
+
+<section class="offers" id="offers">
+
+    <h2 class="section-title">
+        Special Offers
+    </h2>
+
+
+    <div class="offer-box">
+
+        <h2>Make Your Celebration Sweeter! 🎉</h2>
+
+        <p>
+            Get delicious sweets, beautiful cakes,
+            chocolates, gift packs and decoration items
+            all in one place.
+
+            <br><br>
+
+            Visit AL Fajar today and make your
+            special moments unforgettable!
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CONTACT ================= -->
+
+<section class="contact" id="contact">
+
+    <h2 class="section-title">
+        Contact AL Fajar
+    </h2>
+
+
+    <div class="contact-box">
+
+        <p>
+            📍 <strong>Address:</strong>
+            Kacha Qila, Hyderchok
+        </p>
+
+        <p>
+            📞 <strong>Phone:</strong>
+            03468105018
+        </p>
+
+        <p>
+            🕒 <strong>Opening Hours:</strong>
+            9:00 AM - 11:00 PM
+        </p>
+
+
+        <a
+            href="tel:03468105018"
+            class="call-btn"
+        >
+            📞 Call AL Fajar
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+        © 2026
+        <span>AL Fajar Sweet Shop</span>
+        — All Rights Reserved.
+    </p>
+
+</footer>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+    // Get all slides and dots
+
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".dot");
+
+    let currentIndex = 0;
+
+
+    // Show selected slide
+
+    function showSlide(index) {
+
+        // If index is greater than last slide
+        if (index >= slides.length) {
+            currentIndex = 0;
+        }
+
+        // If index is less than first slide
+        if (index < 0) {
+            currentIndex = slides.length - 1;
+        }
+
+
+        // Remove active class from all slides
+
+        slides.forEach(function(slide) {
+
+            slide.classList.remove("active");
+
+        });
+
+
+        // Remove active class from all dots
+
+        dots.forEach(function(dot) {
+
+            dot.classList.remove("active");
+
+        });
+
+
+        // Activate current slide
+
+        slides[currentIndex].classList.add("active");
+
+        dots[currentIndex].classList.add("active");
+
+    }
+
+
+    // Next / Previous button
+
+    function changeSlide(direction) {
+
+        currentIndex = currentIndex + direction;
+
+        showSlide(currentIndex);
+
+    }
+
+
+    // Dot navigation
+
+    function goToSlide(index) {
+
+        currentIndex = index;
+
+        showSlide(currentIndex);
+
+    }
+
+
+    // Automatic slider
+
+    setInterval(function() {
+
+        currentIndex++;
+
+        showSlide(currentIndex);
+
+    }, 4000);
+
+
+</script>
+
+
+</body>
+</html>
